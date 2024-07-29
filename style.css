@@ -21,7 +21,7 @@ body {
 
 .content{
   width: 100%;
-  min-height: 20vh;
+  min-height: 50vh;
   display: flex;
   align-items: center;
   justify-content: center;
