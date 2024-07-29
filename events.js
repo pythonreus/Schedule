@@ -47,33 +47,70 @@ const events = {
         { name: "Not Available", time: "22H00 - 02H00", type:"Busy - Do not disturb",venue:"Private" }
     ]
   };
+
+
+  const assessments = {
+    "29 July 2024" : [{name:"Scientific Computing",type:"Lab",venue:"MSL"}],
+    "31 July 2024" : [{name:"Computer Networks",type:"Quiz",venue:"MSL"}],
+    "7 August 2024" : [{name:"Computer Networks",type:"Test",venue:"MSL"},{name:"Abstract Mathematics",type:"Tutorial Test",venue:"Flower Hall"}],
+    "8 August 2024" : [{name:"Mechanics",type:"Assignment",venue:"TBC"}],
+    "13 August 2024" : [{name:"Mathematical Modeling and Methods",type:"Test",venue:"RSEH"}],
+    "14 August 2024" : [{name:"Advanced Analysis",type:"Tutorial Test",venue:"RSEH"}],
+    "19 August 2024" : [{name:"Scientific Computing",type:"Lab Test",venue:"MSL"}],
+    "21 August 2024" : [{name:"Mathematical Statistics",type:"Test",venue:"MSL"}],
+    "22 August 2024" : [{name:"Mechanics",type:"Test",venue:"Flower Hall"}],
+    "28 August 2024" : [{name:"Computer Networks",type:"Quiz",venue:"MSL"}],
+    "11 September 2024" : [{name:"Abstract Mathematics",type:"Test",venue:"RSEH"}],
+    "18 September 2024" : [{name:"Advanced Analysis",type:"Test",venue:"RSEH"},{name:"Computer Networks",type:"Quiz",venue:"MSL"}],
+    "25 September 2024" : [{name:"Mathematical Statistics",type:"Test",venue:"MSL"}],
+    "27 September 2024" : [{name:"Mechanics",type:"Assignment",venue:"TBC"}],
+    "1 October 2024" : [{name:"Mathematical Modeling and Methods",type:"Test",venue:"RSEH"}],
+    "2 October 2024" : [{name:"Abstract Mathematics",type:"Tutorial Test",venue:"RSEH"},{name:"Computer Networks",type:"Quiz",venue:"MSL"}],
+    "7 October 2024" : [{name:"Scientific Computing",type:"Test",venue:"RSEH"}],
+    "9 October 2024" : [{name:"Advanced Analysis",type:"Tutorial Test",venue:"RSEH"}],
+    "10 October 2024" : [{name:"Mechanics",type:"Test",venue:"Flower Hall"}],
+    "16 October 2024" : [{name:"Mathematical Statistics",type:"Test",venue:"MSL"}],
+  };
   
 
 
 
 
 
-function displayPost(activities){
+function displayPost(activities,eventDate){
+
+    let event = activities;
+
+    if (assessments[eventDate]) {
+        // Find the matching assessment for the event
+        const assessment = assessments[eventDate].find(a => a.name === event.name);
+        if (assessment) {
+            event.type = assessment.type;
+            event.venue = assessment.venue;
+        }
+    }
     // Create the main card div with necessary classes
     const cardDiv = document.createElement('div');
-    if(activities.type === "Study Session"){
+    if(event.type === "Study Session"){
         cardDiv.classList.add("bg-primary");
-    }else if(activities.type === "Tutorial"){
+    }else if(event.type === "Tutorial"){
         cardDiv.classList.add("bg-secondary");
-    }else if(activities.type === "Tutoring Session"){
+    }else if(event.type === "Tutoring Session"){
         cardDiv.classList.add("bg-warning");
-    }else if(activities.type === "Lab"){
+    }else if(event.type === "Lab"){
         cardDiv.classList.add("bg-info");
-    }else if(activities.type === "Test"){
+    }else if(event.type === "Test"){
         cardDiv.classList.add("bg-success");
-    }else if(activities.type === "Exam"){
+    }else if(event.type === "Exam"){
         cardDiv.classList.add("bg-danger");
-    }else if(activities.type === "Quiz"){
+    }else if(event.type === "Quiz"){
         cardDiv.classList.add("bg-primary-subtle");
-    }else if(activities.type === "Tutorial Test"){
+    }else if(event.type === "Tutorial Test"){
         cardDiv.classList.add("bg-danger-subtle");
-    }else if(activities.type === "Class"){
+    }else if(event.type === "Class"){
         cardDiv.classList.add("bg-black");
+    }else if(event.type === "Assignment"){
+        cardDiv.classList.add("bg-warning-subtle");
     }else{
         cardDiv.classList.add("bg-dark");
     }
@@ -96,23 +133,23 @@ function displayPost(activities){
     // Create the card title element
     const cardTitle = document.createElement('h4');
     cardTitle.classList.add('card-title','fw-bolder');
-    cardTitle.textContent = activities.name;
+    cardTitle.textContent = event.name;
 
     // Create the card text paragraph
     const cardText = document.createElement('p');
     cardText.classList.add('card-text');
-    cardText.textContent = activities.type;
+    cardText.textContent = event.type;
 
     // Create the card text paragraph
     const venue = document.createElement('p');
     venue.classList.add('card-text');
-    venue.textContent = `Venue : ${activities.venue}`;
+    venue.textContent = `Venue : ${event.venue}`;
 
 
     // Create the small text element
     const smallText = document.createElement('small');
     smallText.classList.add('text-body-primary','fw-lighter');
-    smallText.textContent = `Time : ${activities.time}`;
+    smallText.textContent = `Time : ${event.time}`;
 
     // Create the small text paragraph
     const smallTextParagraph = document.createElement('p');
@@ -162,7 +199,7 @@ export default function displayDateInfo(day,dayOfWeek,monthName,yearNumber,fullD
     document.querySelector('.main-body').appendChild(cardTitle);
 
     events[dayOfWeek].forEach(event => {
-        displayPost(event);
+        displayPost(event,fullDate);
     });
     } else {
         console.error(`No events found for ${dayOfWeek}`);
