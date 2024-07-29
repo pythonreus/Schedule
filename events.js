@@ -232,10 +232,6 @@ export default function displayDateInfo(day,dayOfWeek,monthName,yearNumber,fullD
 
 
 
-  const assessments = {
-
-  
-  };
   
  
   
