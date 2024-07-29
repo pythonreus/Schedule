@@ -82,11 +82,34 @@ function displayPost(activities,eventDate){
     let event = activities;
 
     if (assessments[eventDate]) {
-        // Find the matching assessment for the event
-        const assessment = assessments[eventDate].find(a => a.name === event.name);
-        if (assessment) {
-            event.type = assessment.type;
-            event.venue = assessment.venue;
+        // Check if the event is a special type that needs multiple assessments checked
+        if (event.name === "AM-STATS-AA") {
+            const assessment = assessments[eventDate].find(a => 
+                a.name === "Abstract Mathematics" || 
+                a.name === "Advanced Analysis" || 
+                a.name === "Mathematical Statistics"
+            );
+            if (assessment) {
+                event.type = assessment.type;
+                event.name = assessment.name;
+                event.venue = assessment.venue;
+            }
+        } else if (event.name === "CN - AA") {
+            const assessment = assessments[eventDate].find(a => 
+                a.name === "Computer Networks" || 
+                a.name === "Analysis Of Algorithms"
+            );
+            if (assessment) {
+                event.name = assessment.name;
+                event.type = assessment.type;
+                event.venue = assessment.venue;
+            }
+        } else {
+            const assessment = assessments[eventDate].find(a => a.name === event.name);
+            if (assessment) {
+                event.type = assessment.type;
+                event.venue = assessment.venue;
+            }
         }
     }
     // Create the main card div with necessary classes
