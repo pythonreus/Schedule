@@ -158,7 +158,7 @@ export default function displayDateInfo(day,dayOfWeek,monthName,yearNumber,fullD
     document.querySelector('.main-body').textContent = "";
     const cardTitle = document.createElement('h2');
     cardTitle.textContent = `${dayOfWeek} - ${fullDate}`;
-    cardTitle.classList.add('dayHeader','fw-bolder');
+    cardTitle.classList.add('dayHeader','fw-bolder','mt-3');
     document.querySelector('.main-body').appendChild(cardTitle);
 
     events[dayOfWeek].forEach(event => {
